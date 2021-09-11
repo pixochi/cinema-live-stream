@@ -82,7 +82,11 @@ const createWindow = async () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    frame: false,
+    fullscreen: true,
   });
+
+  mainWindow.maximize();
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
