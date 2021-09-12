@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.global.css';
 
@@ -13,19 +13,33 @@ const css = `
     height: auto;
 }`;
 
-const Hello = () => {
+const VideoPlayer = () => {
+  const [youtubeUrl, setYoutubeUrl] = useState('');
+
+  useEffect(() => {
+    async function fetchLiveStream() {
+      const response = await fetch('http://localhost:3001/v1/liveStream');
+      const parsedResponse = await response.json();
+      setYoutubeUrl(parsedResponse.url);
+    }
+
+    fetchLiveStream();
+  }, []);
+
   return (
     <div>
       <style>{css}</style>
-      <iframe
-        width="420"
-        height="315"
-        src="https://www.youtube-nocookie.com/embed/MbhUK24YuV8?autoplay=1&rel=0"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
+      {youtubeUrl ? (
+        <iframe
+          width="420"
+          height="315"
+          src={`${youtubeUrl}?autoplay=1&rel=0`}
+          title="Video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      ) : null}
     </div>
   );
 };
@@ -34,7 +48,7 @@ export default function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={Hello} />
+        <Route path="/" component={VideoPlayer} />
       </Switch>
     </Router>
   );
