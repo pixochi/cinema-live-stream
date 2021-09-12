@@ -14,9 +14,8 @@ const createLiveStream = async (liveStreamBody) => {
  * @returns {Promise<LiveStream>}
  */
 const getLiveStream = async () => {
-  return LiveStream.findOne({}, {}, { sort: { 'created_at' : -1 } });
+  return LiveStream.findOne({}, {}, { sort: { createdAt: -1 } });
 };
-
 
 module.exports = {
   createLiveStream,
